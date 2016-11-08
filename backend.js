@@ -1,14 +1,8 @@
  
- 
-
- 
-var turf=require("@turf/turf");
-var precinct=require("./reader"); 
-var votes=require("./jsonReader");
 
 
 
-//L.mapbox.accessToken = 'pk.eyJ1IjoiaGVsbHVpbiIsImEiOiJjaXY5Mjh3ejkwMGRyMnRwYzJkNXl4OGkxIn0.7Ram_00U6U26M5NKFnqvxw';
+L.mapbox.accessToken = 'pk.eyJ1IjoiaGVsbHVpbiIsImEiOiJjaXY5Mjh3ejkwMGRyMnRwYzJkNXl4OGkxIn0.7Ram_00U6U26M5NKFnqvxw';
 
 
 numOfPrecinct= precinct.features.length;
@@ -16,8 +10,8 @@ console.log(precinct.features.length);
  
  
 
-// var map = L.mapbox.map('map', 'mapbox.light')
-//     .setView([27.76, 82.5], 12);
+var map = L.mapbox.map('map', 'mapbox.light')
+    .setView([27.76, 82.5], 12);
 
 
 for(var i=0; i<70; i ++) { 
@@ -86,12 +80,15 @@ for(var i=0; i<70; i ++) {
 
 
 
-//var precinctLayer = L.mapbox.featureLayer(precinct)
-  //  .addTo(map);
+// var precinctLayer = L.mapbox.featureLayer(precinct)
+//     .addTo(map);
 // When map loads, zoom to libraryLayer features
-//map.fitBounds(precinctLayer.getBounds());
+map.fitBounds(precinctLayer.getBounds());
 
 //console.log(L.mapbox);
 
- 
+
+
+
+
 
