@@ -1,10 +1,15 @@
  
  
 
- 
+var csvWriter=require("csv-write-stream");
+var writer=csvWriter();
+var fs=require("fs");
 var turf=require("@turf/turf");
 var precinct=require("./reader"); 
 var votes=require("./jsonReader");
+
+
+writer.pipe(fs.createWriteStream("test.csv")); 
 
 
 
@@ -13,14 +18,8 @@ var votes=require("./jsonReader");
 
 numOfPrecinct= precinct.features.length;
 console.log(precinct.features.length);
- 
- 
 
-// var map = L.mapbox.map('map', 'mapbox.light')
-//     .setView([27.76, 82.5], 12);
-
-
-for(var i=0; i<70; i ++) { 
+for(var i=0; i<numOfPrecinct; i ++) { 
 
     var numOfVotes_DEM;
     var numOfVotes_REP; 
@@ -37,12 +36,12 @@ for(var i=0; i<70; i ++) {
      if (votes[k].Precinct  == currentPrecinct  && 
         votes[k].Party.toUpperCase() == "DEM") { 
          numOfVotes_DEM=votes[k].Votes; 
-         drawDots(numOfVotes_DEM, "rgb(0,0,255)"); 
+         createDots_DEM(numOfVotes_DEM ); 
 
      } else if(votes[k].Precinct  == currentPrecinct  && 
         votes[k].Party.toUpperCase() == "REP"){ 
          numOfVotes_REP=votes[k].Votes; 
-         drawDots(numOfVotes_REP, "rgb(255,0,0)"); 
+         createDots_REP(numOfVotes_REP ); 
      }  
 
    }
@@ -50,48 +49,53 @@ for(var i=0; i<70; i ++) {
 }
 
  
- function drawDots(num, color) { 
-    console.log("drawing!");
-   var poly=turf.bboxPolygon(boundingBox) ;
-   var x_min=boundingBox[0];
-   var x_max=boundingBox[2];
-   var y_min=boundingBox[1];
-   var y_max=boundingBox[3]; 
-  
-   var j=0; 
-   while(j<num){ 
-       var lat = y_min + (Math.random() * (y_max - y_min));
-       var lng = x_min + (Math.random() * (x_max - x_min));
+function createDots_DEM(num) { 
+  console.log("a vote for DEM!");
+ var poly=turf.bboxPolygon(boundingBox) ;
+ var x_min=boundingBox[0];
+ var x_max=boundingBox[2];
+ var y_min=boundingBox[1];
+ var y_max=boundingBox[3]; 
 
-       var point  = turf.point([lng, lat]);
-       var inside = turf.inside(point, precinct.features[i]);
-         
-         if (inside) {
-           // L.mapbox.featureLayer(point, {
-           // pointToLayer: function(feature, latlon) {
-           // return L.circleMarker(latlon, {
-           // fillColor: color,
-           // fillOpacity: 0.5,
-           // stroke: false,
-           // radius:1,
-           // });
-           // }
-           //  }).addTo(map);
-           j+=1; 
+ var j=0; 
+ while(j<num){ 
+     var lat = y_min + (Math.random() * (y_max - y_min));
+     var lng = x_min + (Math.random() * (x_max - x_min));
 
-            
-        }  
-   }
+     var point  = turf.point([lng, lat]);
+     var inside = turf.inside(point, precinct.features[i]);
+       
+       if (inside) {
+           //writer.write({ "x": lng, "y":lat })
+         j+=1;           
+      }  
+ }
 }
 
 
+function createDots_REP(num) { 
+  console.log("a vote for REP");
+ var poly=turf.bboxPolygon(boundingBox) ;
+ var x_min=boundingBox[0];
+ var x_max=boundingBox[2];
+ var y_min=boundingBox[1];
+ var y_max=boundingBox[3]; 
 
-//var precinctLayer = L.mapbox.featureLayer(precinct)
-  //  .addTo(map);
-// When map loads, zoom to libraryLayer features
-//map.fitBounds(precinctLayer.getBounds());
+ var j=0; 
+ while(j<num){ 
+     var lat = y_min + (Math.random() * (y_max - y_min));
+     var lng = x_min + (Math.random() * (x_max - x_min));
 
-//console.log(L.mapbox);
+     var point  = turf.point([lng, lat]);
+     var inside = turf.inside(point, precinct.features[i]);
+       
+       if (inside) {
+            writer.write({ "x": lng, "y":lat })
+         j+=1;           
+      }  
+ }
+}
+
 
  
 

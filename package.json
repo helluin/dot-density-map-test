@@ -18,6 +18,7 @@
   "homepage": "https://github.com/helluin/dot-density-map-test#readme",
   "dependencies": {
     "@turf/turf": "^3.5.3",
+    "csv-write-stream": "^2.0.0",
     "jsdom": "^9.8.3",
     "mapbox.js": "^3.0.0"
   }
